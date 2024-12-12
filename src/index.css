@@ -1,0 +1,13 @@
+* {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* .active {
+  background-color: #60a5fa;
+  color: white;
+} */
+::-webkit-scrollbar {
+  display: none;
+}
