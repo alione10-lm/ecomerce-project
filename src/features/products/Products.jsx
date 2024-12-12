@@ -11,13 +11,23 @@ export default function Products() {
   const [isLoading, setIsLoading] = useState(false);
   const PRODUCTS = useSelector((state) => state.products);
 
+  const ProductsCart = useSelector((state) => state.cart);
+  console.log(ProductsCart);
+  console.log(ProductsCart.map((el) => el.id === 3));
+
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState();
 
   const dispatch = useDispatch();
 
   function handleAddToCart(product) {
-    dispatch(addToCart(product));
+    const newPoduct = {
+      ...product,
+      quantity: 1,
+      totalPrice: product.price,
+    };
+
+    dispatch(addToCart(newPoduct));
     toast.success("product added  successfuly");
   }
   function handleRemoveFromCart(product) {
@@ -32,9 +42,12 @@ export default function Products() {
           setIsLoading(true);
           const res = await fetch(PRODUCTS_API_URl);
           const data = await res.json();
-          const products = data.products.map((element) => {
-            return { ...element, isInCart: false };
-          });
+
+          // const products = data.products.map((element) => {
+          //   return { ...element, isInCart: false };
+          // });
+          const products = data.products;
+
           dispatch(getProducts(products));
         } catch (err) {
           console.log(err.message);
@@ -61,8 +74,6 @@ export default function Products() {
     }
     getCategories();
   }, []);
-
-  console.log(category);
 
   useEffect(
     function () {
@@ -130,7 +141,7 @@ export default function Products() {
             key={ndx}
             className=" border border-slate-200 p-2  relative divide-stone-200 rounded-md w-72  hover:shadow-lg hover:shadow-slate-200 transition-all duration-150  flex flex-col items-center  "
           >
-            <p className=" absolute text-xs bg-red-100 rounded-full px-1 text-red-700 top-1 left-1">
+            <p className=" absolute text-xs bg-yellow-100 rounded-full px-1 text-yellow-700 top-1 left-1">
               {product.brand}
             </p>
             <div className=" min-h-[15rem] max-h-[15rem]  overflow-hidden ">
@@ -146,22 +157,35 @@ export default function Products() {
                 {formatCurrency(product.price)}
               </p>
             </div>
-            {!product.isInCart ? (
-              <button
-                onClick={() => handleAddToCart(product)}
-                className="flex   align-middle items-center justify-center  gap-3 hover:bg-slate-700 transition-colors duration-150 bg-slate-800 text-slate-50 font-semibold text-sm rounded-full py-1 px-4"
-              >
-                add to cart
-                <LuShoppingCart />
-              </button>
-            ) : (
-              <button
-                onClick={() => handleRemoveFromCart(product)}
-                className="flex  align-middle items-center justify-center  gap-3 bg-red-200 hover:bg-red-100 transition-all duration-150 text-red-600 font-semibold text-sm rounded-full py-1 px-4"
-              >
-                remove from cart
-              </button>
-            )}
+            <button
+              key={product.id}
+              onClick={() => handleAddToCart(product)}
+              className="flex   align-middle items-center justify-center  gap-3 hover:bg-slate-700 transition-colors duration-150 bg-slate-800 text-slate-50 font-semibold text-sm rounded-full py-1 px-4"
+            >
+              add to cart
+              <LuShoppingCart />
+            </button>
+
+            {/* {ProductsCart.map((el) =>
+              el.id !== product.id ? (
+                <button
+                  key={product.id}
+                  onClick={() => handleAddToCart(product)}
+                  className="flex   align-middle items-center justify-center  gap-3 hover:bg-slate-700 transition-colors duration-150 bg-slate-800 text-slate-50 font-semibold text-sm rounded-full py-1 px-4"
+                >
+                  add to cart
+                  <LuShoppingCart />
+                </button>
+              ) : (
+                <button
+                  key={product.id}
+                  onClick={() => handleRemoveFromCart(product)}
+                  className="flex  align-middle items-center justify-center  gap-3 bg-red-200 hover:bg-red-100 transition-all duration-150 text-red-600 font-semibold text-sm rounded-full py-1 px-4"
+                >
+                  remove from cart
+                </button>
+              )
+            )} */}
           </div>
         ))}
       </div>
