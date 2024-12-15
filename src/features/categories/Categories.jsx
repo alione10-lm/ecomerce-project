@@ -19,15 +19,7 @@ function Categories() {
   //   queryFn: () => fetch(CATEGORIES_API_URL).then((res) => res.json()),
   // });
 
-  const CATEGORIES = [
-    "tv",
-    "audio",
-    "audio",
-    "laptop",
-    "mobile",
-    "gaming",
-    "appliaces",
-  ];
+  const CATEGORIES = ["tv", "audio", "laptop", "mobile", "gaming", "appliaces"];
   // if (error) toast.error("falied to fetch");
   const { isLoading: isLoadingNewProducts } = useQuery({
     queryKey: ["filterdata", category],
@@ -40,11 +32,12 @@ function Categories() {
     },
   });
 
-  if (isLoadingNewProducts) return <Loader />;
+  // if (isLoadingNewProducts) return <p>loading ...</p>;
   // if (isLoadinCategories) return;
 
   return (
     <div className="flex items-center gap-5 justify-between w-full   border-slate-200">
+      {isLoadingNewProducts && <Loader />}
       <select
         onChange={(e) => setCatgeory(e.target.value)}
         className="bg-white p-1"
