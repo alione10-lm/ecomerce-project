@@ -4,34 +4,40 @@ import Button from "../../ui/Button";
 import {
   decreaseProductQuantity,
   increaseProductQuantity,
-} from "../../productSlice";
-import { formatCurrency } from "../../helpers/helpers";
+} from "../../slices/productSlice";
+import { formatCurrency, TotalCartPrice } from "../../helpers/helpers";
 
 function Cart() {
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector((state) => state.products.cart);
   const dispatch = useDispatch();
 
-  const TotalCartPrice = cart.reduce(
-    (acc, product) => acc + product.totalPrice,
-    0
-  );
-
   return (
-    <div className=" mt-20 px-48   w-full ">
-      <NavLink
-        to={"/app/products"}
-        className="hover:underline transition-all hover:underline-offset-2   duration-150 text-slate-600"
-      >
-        &larr;back to products
-      </NavLink>
+    <div className=" mt-20 px-10  md:px-40 relative   w-full ">
       <div className="flex justify-between items-center">
-        <h1 className="mb-4">your cart , #username</h1>
-        <h1>
-          total price :
-          <spa className="bg-yellow-100 text-yellow-700 font-semibold text-sm p-1 rounded-md">
-            {formatCurrency(TotalCartPrice)}
-          </spa>
-        </h1>
+        <div>
+          <NavLink
+            to={"/app/products"}
+            className="hover:underline transition-all hover:underline-offset-2   duration-150 text-slate-600"
+          >
+            &larr;back to products
+          </NavLink>
+          <h1 className="mb-4">your cart , #username</h1>
+        </div>
+        {TotalCartPrice(cart) === 0 ? (
+          ""
+        ) : (
+          <div className="flex items-center gap-8">
+            <Button to="/app/order" type="small">
+              order products
+            </Button>
+            <h1>
+              total price :
+              <span className="bg-yellow-100 text-yellow-700 font-semibold text-sm p-1 rounded-md">
+                {formatCurrency(TotalCartPrice(cart))}
+              </span>
+            </h1>
+          </div>
+        )}
       </div>
       <div className="w-full divide-y overflow-y-scroll  flex flex-col h-[35rem]">
         {cart.map((el, ndx) => (

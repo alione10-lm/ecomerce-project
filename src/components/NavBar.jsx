@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 export default function NavBar() {
-  const cartLenght = useSelector((state) => state.cart).length;
+  const cartLenght = useSelector((state) => state.products.cart).length;
   return (
     <div className="fixed w-full justify-between  z-50 px-10 top-0 flex gap-10  bg-slate-50 shadow-md items-center ">
       <div className="flex gap-8">

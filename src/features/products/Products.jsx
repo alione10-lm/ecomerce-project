@@ -1,22 +1,20 @@
-import { useEffect, useState } from "react";
-import { CATEGORIES_API_URL, PRODUCTS_API_URl } from "../../services/config";
+import { PRODUCTS_API_URl } from "../../services/config";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, getProducts, removeFromCart } from "../../productSlice";
+import { addToCart, getProducts } from "../../slices/productSlice";
 import toast from "react-hot-toast";
 import { formatCurrency } from "../../helpers/helpers";
-import { LuFilter, LuShoppingCart } from "react-icons/lu";
+import { LuShoppingCart } from "react-icons/lu";
 import Loader from "../../ui/Loader";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import Button from "../../ui/Button";
 
 export default function Products() {
-  const [isLoading, setIsLoading] = useState(false);
-  const PRODUCTS = useSelector((state) => state.products);
+  const navigate = useNavigate();
 
-  const ProductsCart = useSelector((state) => state.cart);
-  console.log(ProductsCart);
-  console.log(ProductsCart.map((el) => el.id === 3));
+  const PRODUCTS = useSelector((state) => state.products.products);
 
-  const [categories, setCategories] = useState([]);
-  const [category, setCategory] = useState();
+  const ProductsIncart = useSelector((state) => state.products.cart);
 
   const dispatch = useDispatch();
 
@@ -30,112 +28,25 @@ export default function Products() {
     dispatch(addToCart(newPoduct));
     toast.success("product added  successfuly");
   }
-  function handleRemoveFromCart(product) {
-    dispatch(removeFromCart(product));
-    toast.success("product removed");
+
+  const { isPending, error } = useQuery({
+    queryKey: ["products"],
+    queryFn: () =>
+      fetch(PRODUCTS_API_URl)
+        .then((res) => res.json())
+        .then((data) => dispatch(getProducts(data.products))),
+  });
+
+  if (error) toast.error("failed to fetch");
+
+  function ProductOverview(productID) {
+    navigate(`${productID}`);
   }
 
-  useEffect(
-    function () {
-      async function fetchData() {
-        try {
-          setIsLoading(true);
-          const res = await fetch(PRODUCTS_API_URl);
-          const data = await res.json();
-
-          // const products = data.products.map((element) => {
-          //   return { ...element, isInCart: false };
-          // });
-          const products = data.products;
-
-          dispatch(getProducts(products));
-        } catch (err) {
-          console.log(err.message);
-        } finally {
-          setIsLoading(false);
-        }
-      }
-      fetchData();
-    },
-    [dispatch]
-  );
-  useEffect(function () {
-    async function getCategories() {
-      try {
-        const res = await fetch(CATEGORIES_API_URL);
-        const data = await res.json();
-        console.log(data.categories);
-        setCategories(data.categories);
-      } catch (err) {
-        console.log(err.message);
-      } finally {
-        // setIsLoading(false);
-      }
-    }
-    getCategories();
-  }, []);
-
-  useEffect(
-    function () {
-      if (!category) return;
-      async function getProductsByCategories() {
-        setIsLoading(true);
-        try {
-          const res = await fetch(`${CATEGORIES_API_URL}?type=${category}`);
-          const data = await res.json();
-          console.log(data);
-          dispatch(getProducts(data.products));
-        } catch (err) {
-          console.log(err);
-        } finally {
-          setIsLoading(false);
-        }
-      }
-      getProductsByCategories();
-    },
-    [category, dispatch]
-  );
   return (
-    <div className="flex flex-col w-full  divide-y  px-10 mt-20 ">
-      <div className="flex  items-center w-full justify-between shadow-sm py-1">
-        <h1 className="text-slate-800 font-semibold text-xl">
-          welcome back, #{" "}
-        </h1>
-        <form>
-          <input
-            type="text"
-            className="bg-slate-100"
-            placeholder="search for a product"
-          />
-          <button>search</button>
-        </form>
-        <div className="flex items-center gap-5 border border-slate-200">
-          <label>categories :</label>
-          <select
-            onChange={(e) => setCategory(e.target.value)}
-            value={category}
-          >
-            <option value=""> select a category</option>
-            {categories.map((category, ndx) => (
-              <option value={category} className="bg-slate-100" key={ndx}>
-                {category}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex items-center">
-          <label className="flex items-center">
-            <LuFilter />
-            filter :
-          </label>
-          <select>
-            <option> default</option>
-            <option>price</option>
-          </select>
-        </div>
-      </div>
+    <div>
       <div className="h-[35rem]  md:grid-cols-4 gap-y-6 py-2 justify-items-center relative overflow-scroll  w-full grid grid-cols-1 sm:grid-cols-2">
-        {isLoading && <Loader />}
+        {isPending && <Loader />}
         {PRODUCTS.map((product, ndx) => (
           <div
             key={ndx}
@@ -146,6 +57,7 @@ export default function Products() {
             </p>
             <div className=" min-h-[15rem] max-h-[15rem]  overflow-hidden ">
               <img
+                onClick={() => ProductOverview(product.id)}
                 className=" cursor-pointer  max-h-[15rem] "
                 src={product.image}
                 alt="/"
@@ -157,35 +69,16 @@ export default function Products() {
                 {formatCurrency(product.price)}
               </p>
             </div>
-            <button
-              key={product.id}
-              onClick={() => handleAddToCart(product)}
-              className="flex   align-middle items-center justify-center  gap-3 hover:bg-slate-700 transition-colors duration-150 bg-slate-800 text-slate-50 font-semibold text-sm rounded-full py-1 px-4"
-            >
-              add to cart
-              <LuShoppingCart />
-            </button>
-
-            {/* {ProductsCart.map((el) =>
-              el.id !== product.id ? (
-                <button
-                  key={product.id}
-                  onClick={() => handleAddToCart(product)}
-                  className="flex   align-middle items-center justify-center  gap-3 hover:bg-slate-700 transition-colors duration-150 bg-slate-800 text-slate-50 font-semibold text-sm rounded-full py-1 px-4"
-                >
-                  add to cart
-                  <LuShoppingCart />
-                </button>
-              ) : (
-                <button
-                  key={product.id}
-                  onClick={() => handleRemoveFromCart(product)}
-                  className="flex  align-middle items-center justify-center  gap-3 bg-red-200 hover:bg-red-100 transition-all duration-150 text-red-600 font-semibold text-sm rounded-full py-1 px-4"
-                >
-                  remove from cart
-                </button>
-              )
-            )} */}
+            {ProductsIncart.length === 0 && (
+              <Button
+                type="xs"
+                key={product.id}
+                onClick={() => handleAddToCart(product)}
+              >
+                add to cart
+                <LuShoppingCart />
+              </Button>
+            )}
           </div>
         ))}
       </div>

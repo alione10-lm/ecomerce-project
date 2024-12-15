@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   products: [],
   cart: [],
+  categories: [],
 };
 
 const productSlice = createSlice({
@@ -12,13 +13,18 @@ const productSlice = createSlice({
     getProducts(state, action) {
       state.products = action.payload;
     },
+    getCategories(state, action) {
+      state.categories = action.payload;
+    },
 
     addToCart(state, action) {
       state.cart.push(action.payload);
-      // state.products = state.products.map((product) =>
-      //   product.id === action.payload.id
-      //     ? { ...product, isInCart: true }
-      //     : product
+
+      // if (state.cart.length === 0) state.cart.push(action.payload);
+      // state.cart.map((el) =>
+      //   el.id === action.payload.id
+      //     ? state.cart
+      //     : state.cart.push(action.payload)
       // );
     },
 
@@ -61,4 +67,5 @@ export const {
   removeFromCart,
   addToCart,
   getProducts,
+  getCategories,
 } = productSlice.actions;
