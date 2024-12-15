@@ -24,7 +24,7 @@ function Login() {
           <div className="animate-bounce mb-2">
             <FaReact className="animate-spin " size={48} color="#334155" />
           </div>
-          <div className=" flex rounded-lg shadow-xl  px-20 justify-center items-center">
+          <div className=" flex rounded-lg   px-20 justify-center items-center">
             {LogIn && <LoginForm SingUpSession={SingUpSession} />}
             {SignUp && <SignUpFrom LoginSession={LoginSession} />}
           </div>
