@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import Loader from "../../ui/Loader";
 import { useQuery } from "@tanstack/react-query";
 import CartItem from "../Cart/CartItem";
+import ProductsItem from "./ProductsItem";
 
 export default function Products() {
   const PRODUCTS = useSelector((state) => state.products.products);
@@ -27,7 +28,7 @@ export default function Products() {
       <div className="h-[35rem]  md:grid-cols-4 gap-y-6 py-2 justify-items-center relative overflow-scroll  w-full grid grid-cols-1 sm:grid-cols-2">
         {isPending && <Loader />}
         {PRODUCTS.map((product, ndx) => (
-          <CartItem product={product} ndx={ndx} key={ndx} />
+          <ProductsItem product={product} ndx={ndx} key={ndx} />
         ))}
       </div>
       <div>

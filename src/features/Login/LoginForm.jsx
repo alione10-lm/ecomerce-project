@@ -24,7 +24,7 @@ function LoginForm({ SingUpSession }) {
       (user) => user.email === data.email && user.password === data.password
     );
 
-    CurrentUser ? navigate("home") : toast.error("invalid credentiels");
+    CurrentUser ? navigate("/app") : toast.error("invalid credentiels");
     CurrentUser && dispatch(Islogin(CurrentUser));
   }
 

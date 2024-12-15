@@ -17,10 +17,10 @@ export default function ProductsPage() {
           <input className="input" type="text" />
           <Button type="small">search</Button>
         </form>
-        <div className="flex   items-start w-fit justify-between px-2  ">
+        <div className="flex gap-2 items-start w-fit justify-between px-2  ">
           <Categories />
           <div className="flex justify-between w-full items-center">
-            <select className="bg-white p-1">
+            <select className="bg-white p-1 focus:ring-1 rounded-full focus:ring-slate-800 border-none outline-none focus:ring-offset-2 transition-all duration-300 ">
               <option> sort by (default)</option>
               <option>sort by (price ⬆) </option>
               <option>sort by (price ⬇)</option>

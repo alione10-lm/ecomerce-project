@@ -40,18 +40,21 @@ function Categories() {
       {isLoadingNewProducts && <Loader />}
       <select
         onChange={(e) => setCatgeory(e.target.value)}
-        className="bg-white p-1"
+        className="bg-white p-1 focus:ring-1 rounded-full focus:ring-slate-800 border-none outline-none focus:ring-offset-2 transition-all duration-300 "
       >
-        <option value="">select a category</option>
+        <Option value="">select a category</Option>
         {CATEGORIES.map((category, ndx) => (
           // {CATEGORIES.categories.map((category, ndx) => (
-          <option value={category} key={ndx}>
+          <Option value={category} key={ndx}>
             {category}
-          </option>
+          </Option>
         ))}
       </select>
     </div>
   );
 }
 
+function Option({ children }) {
+  return <option className="border-none  outline-none">{children}</option>;
+}
 export default Categories;

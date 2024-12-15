@@ -8,6 +8,7 @@ export default function Home() {
         <NavLink to={"/app"}>
           <h3>App &rarr;</h3>
         </NavLink>
+        <NavLink to="login" />
       </>
     </div>
   );

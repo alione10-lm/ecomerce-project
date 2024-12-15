@@ -7,6 +7,10 @@ function Login() {
   const [SignUp, setSignUp] = useState(false);
   const [LogIn, setLogIn] = useState(true);
 
+  // const someOneIsAuth = useSelector((state) => state.users.isAuthentificated);
+  // const AuthUser = useSelector((state) => state.users.AuthentificatedUser);
+  // const username = AuthUser.username;
+
   function LoginSession() {
     setSignUp(false);
     setLogIn(true);
@@ -15,6 +19,7 @@ function Login() {
     setLogIn(false);
     setSignUp(true);
   }
+  // someOneIsAuth === true && navigate("/app");
 
   return (
     <div className="w-full h-screen flex bg-slate-100  items-center p-4  ">
@@ -24,6 +29,7 @@ function Login() {
           <div className="animate-bounce mb-2">
             <FaReact className="animate-spin " size={48} color="#334155" />
           </div>
+
           <div className=" flex rounded-lg   px-20 justify-center items-center">
             {LogIn && <LoginForm SingUpSession={SingUpSession} />}
             {SignUp && <SignUpFrom LoginSession={LoginSession} />}

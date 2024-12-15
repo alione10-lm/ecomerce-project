@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { formatCurrency } from "../helpers/helpers";
 import Loader from "../ui/Loader";
+import Button from "../ui/Button";
+import { useDispatch } from "react-redux";
+import {
+  decreaseProductQuantity,
+  increaseProductQuantity,
+} from "../slices/productSlice";
 
 export default function ProductsDetails() {
   const { productID } = useParams("productID");
   const [currentProduct, setCurrentProduct] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
   useEffect(
     function () {
       async function getProduct() {
@@ -50,6 +57,27 @@ export default function ProductsDetails() {
             </p>
             <p className="text-stone-500">{currentProduct.description}</p>
           </div>
+          {/* <div className="flex items-center gap-2 md:gap-4">
+            <Button
+              type="round"
+              onClick={() =>
+                dispatch(decreaseProductQuantity(currentProduct.id))
+              }
+            >
+              -
+            </Button>
+            <span className="text-sm font-medium">
+              {currentProduct.quantity}
+            </span>
+            <Button
+              type="round"
+              onClick={() =>
+                dispatch(increaseProductQuantity(currentProduct.id))
+              }
+            >
+              +
+            </Button>
+          </div> */}
         </div>
       )}
     </div>
