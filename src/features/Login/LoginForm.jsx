@@ -49,7 +49,7 @@ function LoginForm({ SingUpSession }) {
 
         <input
           className="input"
-          type="text"
+          type="password"
           {...register("password", {
             required: "this filed is required",
             minLength: {

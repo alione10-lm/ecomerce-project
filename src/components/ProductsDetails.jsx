@@ -57,27 +57,27 @@ export default function ProductsDetails() {
             </p>
             <p className="text-stone-500">{currentProduct.description}</p>
           </div>
-          {/* <div className="flex items-center gap-2 md:gap-4">
-            <Button
-              type="round"
-              onClick={() =>
-                dispatch(decreaseProductQuantity(currentProduct.id))
-              }
-            >
-              -
-            </Button>
-            <span className="text-sm font-medium">
-              {currentProduct.quantity}
-            </span>
-            <Button
-              type="round"
-              onClick={() =>
-                dispatch(increaseProductQuantity(currentProduct.id))
-              }
-            >
-              +
-            </Button>
-          </div> */}
+            {/* <div className="flex items-center gap-2 md:gap-4">
+              <Button
+                type="round"
+                onClick={() =>
+                  dispatch(decreaseProductQuantity(currentProduct.id))
+                }
+              >
+                -
+              </Button>
+              <span className="text-sm font-medium">
+                {currentProduct.quantity}
+              </span>
+              <Button
+                type="round"
+                onClick={() =>
+                  dispatch(increaseProductQuantity(currentProduct.id))
+                }
+              >
+                +
+              </Button>
+            </div> */}
         </div>
       )}
     </div>

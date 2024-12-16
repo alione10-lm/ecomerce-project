@@ -49,7 +49,7 @@ function SignUpFrom({ LoginSession }) {
         <label className="text-slate-500"> password</label>
         <input
           className="input"
-          type="text"
+          type="password"
           {...register("password", {
             required: "this field is required",
             minLength: {

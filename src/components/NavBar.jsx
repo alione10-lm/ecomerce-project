@@ -3,7 +3,7 @@ import { LuBell, LuCircleUser, LuShoppingCart } from "react-icons/lu";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
-export default function NavBar() {
+export default function NavBar({ setIsOpen }) {
   const cartLenght = useSelector((state) => state.products.cart).length;
   return (
     <div className="fixed w-full justify-between  z-50 px-10 top-0 flex gap-10  bg-slate-50 shadow-md items-center ">
@@ -35,12 +35,13 @@ export default function NavBar() {
           )}
           <LuShoppingCart />
         </NavLink>
-        <NavLink
+        <button
+          onClick={() => setIsOpen((is) => !is)}
           to="user"
-          className="relative p-2   border border-slate-200 transition-all duration-150 rounded-full"
+          className="relative p-2    border border-slate-200 transition-all duration-150 rounded-full"
         >
           <LuCircleUser />
-        </NavLink>
+        </button>
       </div>
     </div>
   );

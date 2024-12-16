@@ -4,8 +4,8 @@ import Products from "../features/products/Products";
 import Button from "../ui/Button";
 
 export default function ProductsPage() {
-  const users = useSelector((state) => state.users.users);
-  const username = users.at(0).username;
+  const currentUser = useSelector((state) => state.users.AuthentificatedUser);
+  const username = currentUser.username;
 
   return (
     <div className="flex flex-col w-full  divide-y  px-10 mt-16 ">
